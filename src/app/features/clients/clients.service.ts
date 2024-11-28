@@ -12,23 +12,47 @@ export class ClientsService {
   private apiService: ApiService = inject(ApiService);
   private dashboardClients = new BehaviorSubject<Array<ClientDashboard>>([]);
   private seedId: string | undefined = undefined;
-  public dashboardClients$: Observable<Array<ClientDashboard>> = this.dashboardClients.asObservable();
-
   private clientsMap = new Map<string, Client>();
+  private loadedPages = new Set<number>();
+  private currentPage: number = 1;
+  private resultsPerPage: number = 20;
+
+  public dashboardClients$: Observable<Array<ClientDashboard>> = this.dashboardClients.asObservable();
 
   constructor() { }
 
-  public getClients(results: number = 20, page: number = 1): void {
-    let params: string = this.seedId ? `results=${results}&page=${page}&seed=${this.seedId}`
-      : `results=${results}&page=${page}`;
+  public initialiseClients(): Observable<boolean> {
+    if (this.dashboardClients.value.length > 0) {
+      return of(true);
+    }
 
-    this.apiService.get<ClientResponse>(params).pipe(
+    return this.getClients(this.resultsPerPage, this.currentPage).pipe(
+      map(() => true)
+    )
+  }
+
+  public getClients(results: number = 20, page: number = 1): Observable<void> {
+    if (this.loadedPages.has(page)) return of();
+
+    let params = `results=${results}&page=${page}`;
+    if (this.seedId) {
+      params += `&seed=${this.seedId}`;
+    }
+
+    return this.apiService.get<ClientResponse>(params).pipe(
       take(1),
-      tap(response => this.seedId = response.info.seed),
+      tap(response => {
+        if (!this.seedId) this.seedId = response.info.seed
+      }),
       tap(response => response.results.map((client) => this.clientsMap.set(client.login.uuid, client))),
       map(response => response.results.map((client) => this.transformToDashboardModel(client))),
-      tap(dashboardClients => this.dashboardClients.next(dashboardClients))
-    ).subscribe();
+      tap(dashboardClients => {
+        const currentClients = this.dashboardClients.value;
+        this.dashboardClients.next([...currentClients, ...dashboardClients])
+      }),
+      tap(() => this.loadedPages.add(page)),
+      map(() => {})
+    );
   }
 
   public getClientDetails(id: string): Observable<ClientDetails | undefined> {
@@ -40,6 +64,11 @@ export class ClientsService {
     } else {
       return of(undefined);
     }
+  }
+
+  public loadMoreClients(): void {
+    this.currentPage++;
+    this.getClients(this.resultsPerPage, this.currentPage).subscribe();
   }
 
   private transformToDashboardModel(client: Client): ClientDashboard {
