@@ -1,17 +1,56 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
+import { ClientsService } from '../clients.service';
+import { of } from 'rxjs';
+import { ClientDashboard } from '../../../../shared/models/ui/client-dashboard.interface';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ClientCardComponent } from '../../../../shared/components/client-card.component';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
-describe('DashboardComponent', () => {
+fdescribe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  let clientsServiceSpy: jasmine.SpyObj<ClientsService>;
 
+  const mockClients: ClientDashboard[] = [
+    {
+      id: '1',
+      name: { title: 'Mr', first: 'John', last: 'Doe' },
+      email: 'john.doe@example.com',
+      username: 'johndoe',
+      country: 'USA',
+      picture: 'http://example.com/johndoe.jpg',
+    },
+    {
+      id: '2',
+      name: { title: 'Mrs', first: 'Jane', last: 'Smith' },
+      email: 'jane.smith@example.com',
+      username: 'janesmith',
+      country: 'Canada',
+      picture: 'http://example.com/janesmith.jpg',
+    },
+  ];
   beforeEach(async () => {
+
+    clientsServiceSpy = jasmine.createSpyObj('ClientsService', ['loadMoreClients'], {
+      dashboardClients$: of(mockClients),
+    });
+
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent]
-    })
-    .compileComponents();
-    
+      imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        DashboardComponent,
+        ClientCardComponent,
+      ],
+      providers: [
+        { provide: ClientsService, useValue: clientsServiceSpy },
+      ],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -20,4 +59,22 @@ describe('DashboardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should load clients on init', (done) => {
+    component.clients$?.subscribe((clients) => {
+      expect(clients.length).toBe(2);
+      expect(clients).toEqual(jasmine.arrayContaining(mockClients));
+      done();
+    });
+  });
+
+  it('should filter clients based on search input', fakeAsync(() => {
+    component.searchControl.setValue('Jane');
+    tick(500);
+
+    component.filteredClients$.subscribe((clients) => {
+      expect(clients.length).toBe(1);
+      expect(clients[0].name.first).toBe('Jane');
+    });
+  }));
 });
