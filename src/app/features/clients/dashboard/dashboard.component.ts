@@ -4,11 +4,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClientDashboard } from '../../../../shared/models/ui/client-dashboard.interface';
 import { Observable } from 'rxjs';
 import { ClientsService } from '../clients.service';
+import { ClientCardComponent } from '../../../../shared/components/client-card.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ClientCardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

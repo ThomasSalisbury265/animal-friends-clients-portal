@@ -1,0 +1,20 @@
+.dashboard-header {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  display: flex;
+  justify-self: center;
+  font-size: 2.5rem;
+  color: #343a40;
+}
+.card-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin: 0px 55px;
+}
+.dashboard-footer {
+  margin: 20px 10px;
+  display: flex;
+  justify-content: center;
+}

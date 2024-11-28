@@ -1,4 +1,29 @@
-@for (client of clients$ | async; track $index) {
-  <h3 (click)="onClickClient(client.id)">{{client.name.last}}</h3>
-}
-<button type="button" (click)="loadMoreClients()">Load more</button>
+<div class="dashboard-header">
+  <span>Client Dashboard</span>
+</div>
+<div class="search-section">
+
+</div>
+<div class="card-section">
+  @for (client of clients$ | async; track $index) {
+    <app-client-card>
+      <div card-header>
+        <img class="client-image" [src]="client.picture" alt="{{ client.name }}" />
+        <h2>{{ client.name.first }} {{ client.name.last }}</h2>
+        <h3>{{ client.username }}</h3>
+      </div>
+
+      <div card-body class="client-details">
+        <span class="email">{{ client.email }}</span>
+        <span class="country">{{ client.country }}</span>
+      </div>
+
+      <div card-footer>
+        <button class="btn btn-primary" (click)="onClickClient(client.id)">View</button>
+      </div>
+    </app-client-card>
+  }
+</div>
+<div class="dashboard-footer">
+  <button class="btn btn-secondary" type="button" (click)="loadMoreClients()">Load more...</button>
+</div>
