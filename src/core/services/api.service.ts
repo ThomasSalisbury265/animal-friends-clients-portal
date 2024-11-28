@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { environment } from '../../environment/environment';
 import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,11 @@ export class ApiService {
 
   constructor() { }
 
-  public get<T>(results: number = 20, page: number = 1): Observable<T> {
-    return this.http.get<T>(`${this._baseUrl}?results=${results}&page=${page}`).pipe(
+  public get<T>(queryParams?: string): Observable<T> {
+    let url = queryParams ? `${this._baseUrl}?${queryParams}` : this._baseUrl;
+    return this.http.get<T>(`${url}`).pipe(
       catchError(this.handleHttpError)
-    )
+    );
   }
 
   private handleHttpError(error: HttpErrorResponse) {
