@@ -1,16 +1,87 @@
 .details-header {
-  margin-top: 0.5em;
+  margin-top: 0.7em;
   margin-bottom: 1em;
   display: flex;
-  justify-self: center;
-  font-size: 2.5rem;
-  color: #bfc2c6;
+  justify-content: center;
+  font-size: 2.1rem;
+  color: rgb(65, 84, 84);
+  width: 100%;
+  background-color: #e9eaeb;
 }
 
 .client-details-section {
   display: flex;
   margin: 20px;
   justify-content: center;
+
+  .client-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    width: 100%;
+    max-width: 550px;
+    margin: auto;
+
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      background-color: #e9eaeb;
+
+      .client-image {
+        border-radius: 50%;
+        width: 140px;
+        height: 140px;
+        object-fit: cover;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #343a40;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #6c757d;
+      }
+    }
+
+    .card-body {
+      padding: 16px;
+
+      .client-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+
+        .detail {
+          margin: 0;
+          font-size: 1rem;
+          color: #495057;
+
+          strong {
+            color: #343a40;
+          }
+        }
+      }
+    }
+
+    .card-footer {
+      padding: 16px;
+      background-color: #e9eaeb;
+      border-top: none;
+      .registered-date {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
 }
 
 .details-footer {

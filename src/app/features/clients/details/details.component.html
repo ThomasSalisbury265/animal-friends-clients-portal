@@ -1,8 +1,36 @@
 <div class="details-header">
-  <span>Client Details</span>
+  <span>{{ 'details' | uppercase }}</span>
 </div>
-<div class="client-details-section" *ngIf="client$ | async">
-  <h3>{{ (client$ | async)?.name?.first}} {{(client$ | async)?.name?.last}}</h3>
+<div class="client-details-section" *ngIf="(client$ | async) as client">
+  <div class="client-card card h-100 shadow-sm">
+    <div class="card-header">
+      <img
+        class="client-image"
+        [src]="client.picture"
+        [alt]="client.name.first + ' ' + client.name.last"
+      />
+      <div>
+        <h2>{{ client.name.first }} {{ client.name.last }}</h2>
+        <h3>{{ client.username }}</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="client-details">
+        <span class="detail"><strong>Email:</strong> {{ client.email }}</span>
+        <span class="detail"><strong>Phone:</strong> {{ client.phone }}</span>
+        <span class="detail"><strong>Country:</strong> {{ client.country }}</span>
+        <span class="detail"><strong>State:</strong> {{ client.state }}</span>
+        <span class="detail"><strong>City:</strong> {{ client.city }}</span>
+        <span class="detail"><strong>Date of Birth:</strong> {{ client.dateOfBirth }}</span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span class="registered-date">Registered: {{ client.registered }}</span>
+    </div>
+  </div>
+
 </div>
 <div class="details-footer">
   <button class="btn btn-secondary" type="button" (click)="navigateBack()">Back to Dashboard</button>
