@@ -6,3 +6,19 @@
   font-size: 2.5rem;
   color: #bfc2c6;
 }
+
+.client-details-section {
+  display: flex;
+  margin: 20px;
+  justify-content: center;
+}
+
+.details-footer {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+
+  button {
+    margin-bottom: 40px;
+  }
+}

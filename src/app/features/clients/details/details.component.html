@@ -1,9 +1,9 @@
 <div class="details-header">
-  <span>Client Dashboard</span>
+  <span>Client Details</span>
 </div>
-<div *ngIf="client$ | async">
+<div class="client-details-section" *ngIf="client$ | async">
   <h3>{{ (client$ | async)?.name?.first}} {{(client$ | async)?.name?.last}}</h3>
 </div>
-<div class="dashboard-footer">
+<div class="details-footer">
   <button class="btn btn-secondary" type="button" (click)="navigateBack()">Back to Dashboard</button>
 </div>
