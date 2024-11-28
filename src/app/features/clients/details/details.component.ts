@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClientsService } from '../clients.service';
 import { Observable, of, switchMap } from 'rxjs';
 import { ClientDetails } from '../../../../shared/models/ui/client-details.interface';
@@ -14,6 +14,7 @@ import { ClientDetails } from '../../../../shared/models/ui/client-details.inter
 })
 export class DetailsComponent implements OnInit {
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router);
   private clientsService: ClientsService = inject(ClientsService);
   public client$!: Observable<ClientDetails | undefined>;
 
@@ -27,5 +28,9 @@ export class DetailsComponent implements OnInit {
         return of(undefined);
       })
     );
+  }
+
+  public navigateBack() {
+    this.router.navigateByUrl('');
   }
 }

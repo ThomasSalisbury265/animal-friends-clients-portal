@@ -4,7 +4,7 @@
   display: flex;
   justify-self: center;
   font-size: 2.5rem;
-  color: #343a40;
+  color: #bfc2c6;
 }
 .card-section {
   display: flex;
@@ -14,7 +14,11 @@
   margin: 0px 55px;
 }
 .dashboard-footer {
-  margin: 20px 10px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
+
+  button {
+    margin-bottom: 40px;
+  }
 }
