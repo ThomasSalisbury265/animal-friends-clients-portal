@@ -12,8 +12,8 @@ export class ApiService {
 
   constructor() { }
 
-  public get<T>(): Observable<T> {
-    return this.http.get<T>(`${this._baseUrl}?results=20&page=1`).pipe(
+  public get<T>(results: number = 20, page: number = 1): Observable<T> {
+    return this.http.get<T>(`${this._baseUrl}?results=${results}&page=${page}`).pipe(
       catchError(this.handleHttpError)
     )
   }
