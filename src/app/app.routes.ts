@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './features/clients/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  {path: '', component: DashboardComponent}
+  { path: '', redirectTo: 'clients', pathMatch: 'full'},
+  { path: 'clients', loadChildren: () => import('./features/clients/clients.routes').then((feat) => feat.CLIENTS_ROUTES) }
 ];
