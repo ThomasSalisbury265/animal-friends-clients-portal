@@ -1,0 +1,3 @@
+<div *ngIf="client$ | async">
+  <h3>{{ (client$ | async)?.name?.first}} {{(client$ | async)?.name?.last}}</h3>
+</div>
