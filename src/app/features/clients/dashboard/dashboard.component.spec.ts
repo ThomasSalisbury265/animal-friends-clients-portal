@@ -7,9 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ClientCardComponent } from '../../../../shared/components/client-card.component';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 
-fdescribe('DashboardComponent', () => {
+describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let clientsServiceSpy: jasmine.SpyObj<ClientsService>;
@@ -69,12 +68,22 @@ fdescribe('DashboardComponent', () => {
   });
 
   it('should filter clients based on search input', fakeAsync(() => {
-    component.searchControl.setValue('Jane');
-    tick(500);
+    let clientsResult: ClientDashboard[] = [];
 
     component.filteredClients$.subscribe((clients) => {
-      expect(clients.length).toBe(1);
-      expect(clients[0].name.first).toBe('Jane');
+      clientsResult = clients;
     });
+    tick();
+    fixture.detectChanges();
+
+    expect(clientsResult.length).toBe(2);
+    component.searchControl.setValue('Jane');
+
+    tick(500);
+    fixture.detectChanges();
+
+    expect(clientsResult.length).toBe(1);
+    expect(clientsResult[0].name.first).toBe('Jane');
   }));
+
 });
