@@ -1,4 +1,61 @@
-<p>dashboard works!</p>
-@for (client of clients; track $index) {
-  <h2>{{ client.name.first }}</h2>
-}
+<div class="dashboard-header">
+  <span>{{ 'dashboard' | uppercase}}</span>
+</div>
+<div class="container mb-4">
+  <div class="row d-flex justify-content-center">
+    <div class="col-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search clients..."
+        [formControl]="searchControl"
+      />
+    </div>
+  </div>
+</div>
+<div class="card-section">
+  @for (client of filteredClients$ | async; track $index) {
+    <app-client-card>
+      <div card-header>
+        <img class="client-image" [src]="client.picture" alt="{{ client.name }}" />
+        <h2>{{ client.name.first }} {{ client.name.last }}</h2>
+        <h3>{{ client.username }}</h3>
+      </div>
+
+      <div card-body class="client-details">
+        <span class="email">{{ client.email }}</span>
+        <span class="country">{{ client.country }}</span>
+      </div>
+
+      <div card-footer>
+        <button class="btn btn-primary" (click)="onClickClient(client.id)">View</button>
+      </div>
+    </app-client-card>
+  }
+</div>
+<nav class="my-4">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="(currentPage$ | async) === 1">
+      <a class="page-link" href="#" (click)="prevPage(); $event.preventDefault();">
+        <span>&laquo;</span>
+      </a>
+    </li>
+    <li
+      class="page-item"
+      *ngFor="let page of pagesArray$ | async"
+      [class.active]="(currentPage$ | async) === page"
+    >
+      <a class="page-link" href="#" (click)="onPageChange(page); $event.preventDefault();">
+        {{ page }}
+      </a>
+    </li>
+    <li class="page-item" [class.disabled]="(currentPage$ | async) === (totalPages$ | async)">
+      <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault();">
+        <span>&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<div class="dashboard-footer">
+  <button class="btn btn-secondary" type="button" (click)="loadMoreClients()">Load more...</button>
+</div>
