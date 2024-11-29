@@ -4,7 +4,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { of } from 'rxjs';
 import { ClientResponse, Client } from '../../../shared/models/api/client-response.interface';
 
-fdescribe('ClientsService', () => {
+describe('ClientsService', () => {
   let service: ClientsService;
   let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
